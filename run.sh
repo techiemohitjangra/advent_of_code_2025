@@ -72,22 +72,30 @@ function validate_solutions(){
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 SCRIPT_NAME=$(basename "${BASH_SOURCE[0]}")
 
-if [ $# -eq 0 ] || [ $# -gt 1 ]; then
-    echo "Usage: $SCRIPT_NAME [full|test]"
-    exit 1
-fi
-if [ $1 == "full" ]; then
-    DATA_FILE="$SCRIPT_DIR/solution.txt"
-elif [ $1 == "test" ];then
-    DATA_FILE="$SCRIPT_DIR/test_solution.txt"
-else
-    echo "Usage: $SCRIPT_NAME [full|test]"
+if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    echo "Usage: $SCRIPT_NAME <full|test> <day_directory>"
     exit 1
 fi
 
-if [[ ! -f "$DATA_FILE" ]]; then
-    echo -e "${LIGHT_RED}ERROR${NO_COLOR}: $DATA_FILE not found!" >&2
+DAY_DIR="$SCRIPT_DIR/$2"
+
+if [ $1 == "full" ]; then
+    DAY_FILE="$DAY_DIR/solution.txt"
+elif [ $1 == "test" ];then
+    DAY_FILE="$DAY_DIR/test_solution.txt"
+else
+    echo "Usage: $SCRIPT_NAME <full|test> <day_directory>"
+    exit 1
+fi
+
+if [[ ! -d "$DAY_DIR" ]]; then
+    echo -e "${LIGHT_RED}ERROR${NO_COLOR}: $DAY_DIR not found!" >&2
+    exit 1
+fi
+
+if [[ ! -f "$DAY_FILE" ]]; then
+    echo -e "${LIGHT_RED}ERROR${NO_COLOR}: $DAY_FILE not found!" >&2
     exit 1
 fi
 MODE=$1
-validate_solutions $MODE $(cat $DATA_FILE)
+validate_solutions $MODE $(cat $DAY_FILE)
