@@ -3,4 +3,6 @@
 */test_data.txt
 */solution.txt
 */test_solution.txt
+*/**/run.sh
+*/**/Makefile
 TODO.md
